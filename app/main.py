@@ -37,7 +37,7 @@ def _create_app():
     return app
 
 
-def _debug(host='localhost', port=5050, debug=True):
+def _debug(host='localhost', port=5000, debug=True):
     flask_app = _create_app()
     flask_app.run(host=host, port=port, debug=debug)
 

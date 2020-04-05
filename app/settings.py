@@ -11,5 +11,12 @@ try:
         default_read_capacity=db_config['read_capacity'],
         default_write_capacity=db_config['write_config']
     )
-except Exception:
+except ImportError as ex:
+    # You can add logic here
+    raise
+except KeyError as ex:
+    # You can add logic here
+    raise
+except Exception as ex:
+    # You can add logic here
     pass
