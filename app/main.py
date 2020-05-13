@@ -1,12 +1,15 @@
 import flask
 
-from app import settings
+from app import settings, log
 from app.config import create_resources
 from app.utils import get_module_from_dotted_path
 
 
 def _create_app():
-    app = flask.Flask(__name__)
+    app = flask.Flask(settings.APP_NAME)
+    app.logger.addHandler(log.stream_log_handler())
+    app.logger.addHandler(log.file_log_handler())
+
     for blueprint in settings.BLUEPRINTS:
         module = get_module_from_dotted_path(blueprint)
         blueprint_obj = getattr(module, 'blueprint')

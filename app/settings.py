@@ -1,6 +1,17 @@
+APP_NAME = 'flask-restful-logging'
+
 BLUEPRINTS = [
     'app.review',
 ]
+
+# Logging
+LOG_FILE_PATH = '../log-info.log'
+
+LOG_FORMATTER_STRING = (
+    '%(asctime)s - [%(levelname)s] - %(message)s\n'
+    '[File] - %(pathname)s\n'
+    '[Function/Class] - %(funcName)s [Line No.] - %(lineno)d\n'
+)
 
 try:
     from app.local_settings import db_config

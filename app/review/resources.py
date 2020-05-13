@@ -5,6 +5,7 @@ from webargs.flaskparser import use_args, use_kwargs
 from app.review.blueprint import API
 from app.review.models import ReviewModel
 from app.review.schemas import ReviewSchema
+from app.log import logger
 
 
 @API.resource('/books/<string:product_id>', strict_slashes=False, methods=['GET', 'PUT', 'DELETE'],
@@ -23,7 +24,11 @@ class ReviewResource(flask_restful.Resource):
         )
 
         review_obj = self.model.dict2model(data)
-        review_obj.save()
+        try:
+            review_obj.save()
+        except Exception as ex:
+            logger.error(ex)
+            raise
 
         return self.serializer().dump(data), 201
 
@@ -31,7 +36,8 @@ class ReviewResource(flask_restful.Resource):
     def get(self, **kwargs):
         try:
             review_obj = self.model.get(hash_key=str(kwargs['product_id']))
-        except self.model.DoesNotExist:
+        except self.model.DoesNotExist as ex:
+            logger.error(str(ex))
             response = {
                 'msg': 'resource with product id {} does not exist'.format(kwargs['product_id'])
             }
